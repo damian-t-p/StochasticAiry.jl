@@ -35,6 +35,7 @@ end
 
 
 function solve_phi(U0, t_grid, dt, lambda_grid; verbose=false)
+    
     grid_len = length(t_grid)
     
     s = t_grid[1]
@@ -75,8 +76,8 @@ function solve_phi(U0, t_grid, dt, lambda_grid; verbose=false)
 
     log_coefs_v = log.(coefs_v)
     
-    phi_deriv_grid = undef_copy(lambda_grid)
-    phi_full_grid = undef_copy(lambda_grid)
+    phi_deriv_grid = undef_copy(lambda_grid) * 1.0
+    phi_full_grid = undef_copy(lambda_grid) * 1.0
     
     for (i, lambda) in pairs(lambda_grid)
 
@@ -99,6 +100,15 @@ function solve_phi(U0, t_grid, dt, lambda_grid; verbose=false)
             display(sums)
             throw("NAN sums")
         end
+
+        # If lamba grid is purely real, make phi values real
+        if eltype(lambda_grid) <: Real
+            @assert maximum(abs.(imag.(sums_deriv))/abs.(sums_deriv)) < 1e-6
+            @assert maximum(abs.(imag.(sums_full))/abs.(sums_deriv)) < 1e-6
+
+            sums_deriv = real.(sums_deriv)
+            sums_full = real.(sums_full)
+        end
         
         phi_deriv_grid[i] = (c2 * sums_deriv[1,1] + c1 * sums_deriv[1,2] + c1 * lambda * sums_deriv[1,3]) + c1
         phi_full_grid[i] = (c2 * sums_full[1,1] + c1 * sums_full[1,2] + c1 * lambda * sums_full[1,3]) + c1
@@ -110,10 +120,15 @@ function solve_phi(U0, t_grid, dt, lambda_grid; verbose=false)
     end
     
     if verbose
-        return (phi_full_grid, phi_deriv_grid, coefs_v, log_coefs_v, maxval_logs)
+        return (
+            SAi = phi_full_grid,
+            DSAi = phi_deriv_grid,
+            Vcoefs = coefs_v,
+            LogVcoefs = log_coefs_v,
+            MaxLogs = maxval_logs)
     else
         return (
-        SAi = phi_full_grid,
-        DSAi = phi_deriv_grid)
+            SAi = phi_full_grid,
+            DSAi = phi_deriv_grid)
     end
 end;
