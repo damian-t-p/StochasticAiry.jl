@@ -15,7 +15,7 @@ This package allows for sampling of *SAi* and its time derivative *SAi'* with on
 
 ## Function of the time parameter
 
-For a fixed *lambda<sup>0</sup>*, we can sample over a range of real *t*-values.
+For a fixed *lambda<sub>0</sub>*, we can sample over a range of real *t*-values.
 The time grid must be a subtype of `AbstractRange`, as the t-values must be equally spaced.
 For example, running
 ```
@@ -23,11 +23,11 @@ t_grid = range(10, -20, length=3*10^3)
 sai, sai_dash = rand(SAi(beta), :time, lambda0, t_grid)
 ```
 will produce 
-![](/docs/img/SAi-path.pdf)
+![](/docs/img/SAi-path.png)
 
 ## Function of the space parameter
 
-For a fixed *t<sup>0</sup>*, we can sample over an array of complex *lambda*-values.
+For a fixed *t<sub>0</sub>*, we can sample over an array of complex *lambda*-values.
 In the following we run
 ```
 n_re_lambda = 1000
@@ -42,7 +42,7 @@ sai, sai_dash = rand(SAi(beta), :space, y0, lambda_grid)
 ```
 
 The following plot then depticts `log.(abs.(sai))`:
-![](/docs/img/SAi-lambda-log-abs.pdf)
+![](/docs/img/SAi-lambda-log-abs.png)
 
 # References
 [1] Lambert & Paquette, "Strong approximation of Gaussian beta-ensemble characteristic polynomials: the edge regime and the stochastic Airy function," arXiv:2009.05003 [math.PR] July 2021
