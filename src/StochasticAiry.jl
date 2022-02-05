@@ -13,7 +13,7 @@ struct SAi <: ContinuousMatrixDistribution
     beta::Real
 end
 
-function rand(d::SAi, argtype::Symbol, basepoint::Number, argrange::AbstractRange{T}) where T <: Real
+function rand(d::SAi, argtype::Symbol, basepoint::Number, argrange::AbstractRange{T}; kwargs...) where T <: Real
 
     if argtype == :time
         t_grid = collect(argrange)
@@ -24,7 +24,7 @@ function rand(d::SAi, argtype::Symbol, basepoint::Number, argrange::AbstractRang
         return solve_sai(U0, t_grid, dt, basepoint)
     elseif argtype == :space
 
-        return rand(d, :space, basepoint, collect(argrange))
+        return rand(d, :space, basepoint, collect(argrange); kwargs...)
     else
         throw("argtype must be :time or :space")
     end
