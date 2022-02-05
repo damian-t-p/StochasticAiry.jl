@@ -22,7 +22,8 @@ For example, running
 t_grid = range(10, -20, length=3*10^3)
 sai, sai_dash = rand(SAi(beta), :time, lambda0, t_grid)
 ```
-will produce 
+will produce
+
 ![](/docs/img/SAi-path.png)
 
 ## Function of the space parameter
@@ -42,6 +43,7 @@ sai, sai_dash = rand(SAi(beta), :space, y0, lambda_grid)
 ```
 
 The following plot then depticts `log.(abs.(sai))`:
+
 ![](/docs/img/SAi-lambda-log-abs.png)
 
 # References
